@@ -23,9 +23,7 @@ const ArtworkDetail = ({ artwork }: IProps) => {
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
   const handleCommentSubmit = () => {
-    if (validateFields() && validateComment(comment)) {
-      setIsSnackbarOpen(true);
-    } else {
+    if (validateFields() && validateComment(comment) && validateEmail(email)) {
       setIsSnackbarOpen(true);
     }
   };

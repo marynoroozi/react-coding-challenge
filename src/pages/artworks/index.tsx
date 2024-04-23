@@ -6,6 +6,7 @@ import CircularColor from "../../components/loading";
 import { artworkModel } from "../../models/artwork";
 import ArtworksList from "../../components/ArtWorkList";
 import Pagination from "../../components/pagination";
+import FilterDropDown from "../../components/FilterDropdown";
 
 const ArtworksPage = () => {
   const [artworks, setArtworks] = useState([]);
@@ -14,9 +15,11 @@ const ArtworksPage = () => {
   const [searchOffset, setSearchOffset] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const [total, setTotal] = useState(0);
+  const [category, setCategory] = useState([]);
 
   useEffect(() => {
     getArtworks(0);
+    getCategory();
   }, []);
 
   const getArtworks = async (offset: number) => {
@@ -29,6 +32,21 @@ const ArtworksPage = () => {
     } catch (error) {
       console.error("Error fetching artworks:", error);
       setLoading(false);
+    }
+  };
+
+  const getCategory = async () => {
+    try {
+      const res = await artworkService.category();
+      const normalizedArray = res.data.data.map((item: any) => {
+        return {
+          label: item.title,
+          value: item.id,
+        };
+      });
+      setCategory(normalizedArray);
+    } catch (error) {
+      console.error("Error fetching category:", error);
     }
   };
 
@@ -88,6 +106,7 @@ const ArtworksPage = () => {
         </Grid>
         <Grid item xs={12} md={6}>
           <SearchFilter onSubmit={(query) => handleSearch(query, 0)} />
+          <FilterDropDown category={category} />
         </Grid>
       </Grid>
       {loading ? (

@@ -16,4 +16,9 @@ export const artworkService = {
       method: "GET",
       url: `/artworks/search?q=${search}&limit=${limit}&offset=${offset}&page=${page}`,
     }),
+  category: () =>
+    instance({
+      method: "GET",
+      url: `/category-terms`,
+    }),
 };
